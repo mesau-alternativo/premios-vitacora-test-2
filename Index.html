@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-in & Tarjeta de Embarque | Turismo Global</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Librerías QR y PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-dark: #0f172a;
+            --accent: #f59e0b;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --success: #10b981;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-main);
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            max-width: 480px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px dashed #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .card-header i.logo-icon {
+            font-size: 38px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            color: var(--primary-dark);
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .card-header p {
+            margin: 4px 0 0;
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .instruction-box {
+            background-color: #fef3c7;
+            border-left: 5px solid var(--accent);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        .instruction-box ol { margin: 8px 0 0; padding-left: 18px; }
+
+        .qr-container {
+            text-align: center;
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-group { margin-bottom: 18px; }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--primary-dark);
+        }
+
+        input[type="email"], input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        input[type="email"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary) 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #059669 0%, var(--success) 100%);
+            margin-top: 12px;
+        }
+
+        /* Pase de Abordar Estilo Ticket */
+        .ticket-box {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .flight-route {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .route-city h4 { margin: 0; font-size: 18px; color: var(--primary); }
+        .route-city span { font-size: 11px; color: #64748b; }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .info-item {
+            font-size: 12px;
+        }
+
+        .info-item span {
+            display: block;
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+
+        .info-item strong {
+            color: var(--primary-dark);
+            font-size: 13px;
+        }
+
+        .hidden { display: none !important; }
+
+        .registered-badge {
+            background-color: #d1fae5;
+            color: #065f46;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .reset-btn {
+            background: #64748b;
+            margin-top: 15px;
+            font-size: 12px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="card-header">
+            <i class="fa-solid fa-plane-departure logo-icon"></i>
+            <h2>Turismo Explorer</h2>
+            <p>Sistema de Registro & Check-in</p>
+        </div>
+
+        <!-- VISTA 1: Landing (PC / Kiosco) -->
+        <div id="landing-view">
+            <div class="instruction-box">
+                <strong><i class="fa-solid fa-circle-info"></i> Instructivo para Pasajeros:</strong>
+                <ol>
+                    <li>Escanee el código QR inferior utilizando la cámara de su celular.</li>
+                    <li>Ingrese su correo electrónico registrado y presione <b>"Consultar Datos"</b>.</li>
+                    <li>Verifique los detalles de su vuelo.</li>
+                    <li>Tome o seleccione una fotografía clara de su rostro.</li>
+                    <li>Confirme el envío y descargue su pase de abordar en formato PDF.</li>
+                </ol>
+            </div>
+
+            <div class="qr-container">
+                <label><i class="fa-solid fa-qrcode"></i> Escanee aquí con su móvil:</label>
+                <div id="qrcode"></div>
+            </div>
+        </div>
+
+        <!-- VISTA 2: Aplicación Móvil (Celular) -->
+        <div id="app-view" class="hidden">
+            <!-- Paso 1: Búsqueda -->
+            <div id="step-search">
+                <div class="form-group">
+                    <label for="email"><i class="fa-regular fa-envelope"></i> Correo electrónico del titular:</label>
+                    <input type="email" id="email" placeholder="ejemplo@correo.com" required>
+                </div>
+                <button type="button" onclick="buscarUsuario()">
+                    <i class="fa-solid fa-magnifying-glass"></i> Consultar Reserva
+                </button>
+                <div id="error-msg" style="color:#ef4444; font-size:13px; text-align:center; margin-top:10px;" class="hidden">
+                    Correo no registrado en la lista de pasajeros.
+                </div>
+            </div>
+
+            <!-- Paso 2: Detalles y Subida -->
+            <div id="step-details" class="hidden">
+                <div id="pdf-content">
+                    <div class="ticket-box">
+                        <div class="flight-route">
+                            <div class="route-city">
+                                <h4 id="disp-origen-code">ORG</h4>
+                                <span id="disp-origen">Origen</span>
+                            </div>
+                            <i class="fa-solid fa-plane" style="color: var(--accent); font-size: 18px;"></i>
+                            <div class="route-city">
+                                <h4 id="disp-destino-code">DES</h4>
+                                <span id="disp-destino">Destino</span>
+                            </div>
+                        </div>
+
+                        <div class="info-grid">
+                            <div class="info-item"><span>Pasajero</span><strong id="disp-nombre">-</strong></div>
+                            <div class="info-item"><span>Asiento</span><strong id="disp-asiento">-</strong></div>
+                            <div class="info-item"><span>Puerta</span><strong id="disp-puerta">-</strong></div>
+                            <div class="info-item"><span>Embarque</span><strong id="disp-embarque">-</strong></div>
+                            <div class="info-item"><span>Despegue</span><strong id="disp-despegue">-</strong></div>
+                            <div class="info-item"><span>Aterrizaje</span><strong id="disp-aterrizaje">-</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="upload-section">
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label for="photo"><i class="fa-solid fa-camera"></i> Fotografía del Pasajero:</label>
+                        <input type="file" id="photo" accept="image/*" capture="environment">
+                    </div>
+                    <button type="button" onclick="enviarFoto()">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Confirmar & Subir Foto
+                    </button>
+                </div>
+
+                <div id="registered-section" class="hidden">
+                    <div class="registered-badge">
+                        <i class="fa-solid fa-circle-check"></i> Fotografía y Check-in Registrados
+                    </div>
+                    <button type="button" class="btn-pdf" onclick="descargarPDF()">
+                        <i class="fa-solid fa-file-pdf"></i> Descargar Pase de Abordar (PDF)
+                    </button>
+                </div>
+
+                <div id="status-msg" style="margin-top: 10px; text-align: center; font-weight: 600; font-size:13px;"></div>
+
+                <button type="button" class="reset-btn" onclick="probarOtroUsuario()">
+                    <i class="fa-solid fa-rotate-left"></i> Consultar otra reserva
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const esMovilDesdeQR = urlParams.get('empezar') === 'si';
+
+        if (esMovilDesdeQR) {
+            document.getElementById('landing-view').classList.add('hidden');
+            document.getElementById('app-view').classList.remove('hidden');
+        } else {
+            document.getElementById('landing-view').classList.remove('hidden');
+            document.getElementById('app-view').classList.add('hidden');
+
+            const urlBase = window.location.href.split('?')[0];
+            new QRCode(document.getElementById("qrcode"), {
+                text: urlBase + '?empezar=si',
+                width: 150,
+                height: 150
+            });
+        }
+
+        const listaAsistentes = [
+            { email: "mauricioesaualternativo@gmail.com", nombre: "Mauricio Esau Echenagucia", asiento: "6C", puerta: "A2", embarque: "11:00 am", despegue: "11:45 am", aterrizaje: "02:30 pm", origen: "Salta", destino: "Buenos Aires Aeroparque" },
+            { email: "sofia.martinez@ejemplo.com", nombre: "Sofía Martínez", asiento: "1A", puerta: "B1", embarque: "08:15 am", despegue: "09:00 am", aterrizaje: "10:45 am", origen: "Córdoba", destino: "Mendoza" },
+            { email: "carlos.gomez@ejemplo.com", nombre: "Carlos Gómez", asiento: "12F", puerta: "C3", embarque: "10:30 am", despegue: "11:15 am", aterrizaje: "01:00 pm", origen: "Buenos Aires Ezeiza", destino: "Bariloche" },
+            { email: "lucia.ferreyra@ejemplo.com", nombre: "Lucía Ferreyra", asiento: "4B", puerta: "A1", embarque: "01:00 pm", despegue: "01:40 pm", aterrizaje: "03:10 pm", origen: "Rosario", destino: "Salta" },
+            { email: "diego.alvarez@ejemplo.com", nombre: "Diego Álvarez", asiento: "18D", puerta: "B4", embarque: "03:30 pm", despegue: "04:15 pm", aterrizaje: "06:00 pm", origen: "Mendoza", destino: "Buenos Aires Aeroparque" },
+            { email: "valentina.diaz@ejemplo.com", nombre: "Valentina Díaz", asiento: "2C", puerta: "A3", embarque: "05:00 pm", despegue: "05:40 pm", aterrizaje: "07:20 pm", origen: "Iguazú", destino: "Córdoba" },
+            { email: "mateo.romero@ejemplo.com", nombre: "Mateo Romero", asiento: "15A", puerta: "C2", embarque: "06:15 pm", despegue: "07:00 pm", aterrizaje: "09:10 pm", origen: "Neuquén", destino: "Buenos Aires Ezeiza" },
+            { email: "camila.torres@ejemplo.com", nombre: "Camila Torres", asiento: "8E", puerta: "B2", embarque: "08:00 pm", despegue: "08:45 pm", aterrizaje: "10:30 pm", origen: "Tucumán", destino: "Rosario" },
+            { email: "joaquin.sosa@ejemplo.com", nombre: "Joaquín Sosa", asiento: "22F", puerta: "A4", embarque: "09:30 pm", despegue: "10:15 pm", aterrizaje: "11:55 pm", origen: "Ushuaia", destino: "El Calafate" },
+            { email: "elena.benitez@ejemplo.com", nombre: "Elena Benítez", asiento: "5F", puerta: "C1", embarque: "11:00 pm", despegue: "11:40 pm", aterrizaje: "01:20 am", origen: "Comodoro Rivadavia", destino: "Buenos Aires Aeroparque" }
+        ]; 
+
+        let usuarioActual = null; 
+
+        function buscarUsuario() {
+            const emailInput = document.getElementById('email').value.trim().toLowerCase(); 
+            const errorMsg = document.getElementById('error-msg'); 
+            
+            usuarioActual = listaAsistentes.find(u => u.email.trim().toLowerCase() === emailInput); 
+            
+            if (usuarioActual) { 
+                errorMsg.classList.add('hidden'); 
+                document.getElementById('step-search').classList.add('hidden'); 
+                
+                document.getElementById('disp-nombre').innerText = usuarioActual.nombre; 
+                document.getElementById('disp-origen').innerText = usuarioActual.origen; 
+                document.getElementById('disp-origen-code').innerText = usuarioActual.origen.substring(0,3).toUpperCase();
+                document.getElementById('disp-destino').innerText = usuarioActual.destino; 
+                document.getElementById('disp-destino-code').innerText = usuarioActual.destino.substring(0,3).toUpperCase();
+                document.getElementById('disp-asiento').innerText = usuarioActual.asiento; 
+                document.getElementById('disp-puerta').innerText = usuarioActual.puerta; 
+                document.getElementById('disp-embarque').innerText = usuarioActual.embarque; 
+                document.getElementById('disp-despegue').innerText = usuarioActual.despegue; 
+                document.getElementById('disp-aterrizaje').innerText = usuarioActual.aterrizaje; 
+                
+                const yaSubioFoto = localStorage.getItem('foto_subida_' + usuarioActual.email);
+                
+                if (yaSubioFoto) {
+                    document.getElementById('upload-section').classList.add('hidden');
+                    document.getElementById('registered-section').classList.remove('hidden');
+                } else {
+                    document.getElementById('upload-section').classList.remove('hidden');
+                    document.getElementById('registered-section').classList.add('hidden');
+                }
+
+                document.getElementById('step-details').classList.remove('hidden'); 
+            } else { 
+                errorMsg.classList.remove('hidden'); 
+            } 
+        } 
+
+        function enviarFoto() {
+            const photoInput = document.getElementById('photo'); 
+            const statusMsg = document.getElementById('status-msg'); 
+            
+            if (!photoInput.files || photoInput.files.length === 0) { 
+                alert("Por favor selecciona o toma una foto."); 
+                return; 
+            } 
+            
+            const file = photoInput.files[0]; 
+            statusMsg.style.color = "#2563eb"; 
+            statusMsg.innerText = "Subiendo imagen al servidor..."; 
+
+            const formData = new FormData();
+            formData.append("image", file);
+            
+            const API_KEY = "a0626c644e5b18323b4f51b88d4530d4"; 
+
+            fetch(`https://api.imgbb.com/1/upload?key=${API_KEY}`, {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    statusMsg.style.color = "#10b981";
+                    statusMsg.innerText = "¡Fotografía registrada con éxito!";
+                    
+                    localStorage.setItem('foto_subida_' + usuarioActual.email, 'true');
+
+                    setTimeout(() => {
+                        document.getElementById('upload-section').classList.add('hidden');
+                        document.getElementById('registered-section').classList.remove('hidden');
+                        statusMsg.innerText = "";
+                    }, 1200);
+
+                } else {
+                    statusMsg.style.color = "#ef4444";
+                    statusMsg.innerText = "Error al procesar la imagen.";
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                statusMsg.style.color = "#ef4444";
+                statusMsg.innerText = "Error de conexión con el servidor.";
+            });
+        }
+
+        function descargarPDF() {
+            const element = document.getElementById('pdf-content');
+            const opt = {
+                margin:       8,
+                filename:     `Boleto_${usuarioActual.nombre.replace(/ /g, "_")}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a5', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+
+        function probarOtroUsuario() {
+            document.getElementById('step-details').classList.add('hidden');
+            document.getElementById('step-search').classList.remove('hidden');
+            document.getElementById('email').value = "";
+            document.getElementById('status-msg').innerText = "";
+            document.getElementById('photo').value = "";
+        }
+    </script>
+</body>
+</html>
