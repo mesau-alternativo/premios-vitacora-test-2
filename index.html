@@ -180,3 +180,342 @@
             letter-spacing: 0.5px;
             box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
         }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-light) 100%);
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #059669 0%, var(--success) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            margin-top: 12px;
+        }
+
+        .ticket-box {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            border-radius: 14px;
+            padding: 20px;
+            margin-top: 15px;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-gold);
+        }
+
+        .flight-route {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed var(--border-gold);
+            text-align: center;
+        }
+
+        .route-city h4 { margin: 0; font-size: 20px; color: var(--gold-light); font-weight: 800; }
+        .route-city span { font-size: 11px; color: var(--text-muted); }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .info-item { font-size: 12px; }
+
+        .info-item span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-item strong {
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .photo-hint {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--border-gold);
+            color: #fef3c7;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hidden { display: none !important; }
+
+        .registered-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6ee7b7;
+            padding: 14px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 700;
+            margin-top: 15px;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            font-size: 13px;
+        }
+
+        .reset-btn {
+            background: #334155;
+            color: white;
+            margin-top: 15px;
+            font-size: 11px;
+            padding: 10px;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="card-header">
+            <i class="fa-solid fa-award logo-icon"></i>
+            <h2>Premios Bitácora</h2>
+            <p>Pase de Abordar & Galardones</p>
+        </div>
+
+        <div id="landing-view">
+            <div class="instruction-box">
+                <strong><i class="fa-solid fa-star"></i> Bienvenid@ a los Premios Bitácora:</strong>
+                <ol>
+                    <li>Escanee el código QR inferior con la cámara de su celular.</li>
+                    <li>Ingrese su correo electrónico registrado y toque <b>"Consultar Reserva"</b>.</li>
+                    <li>Verifique sus detalles de acreditación.</li>
+                    <li>Suba una fotografía especial con sus acompañantes o grupo para la presentación del evento.</li>
+                    <li>Obtenga y descargue su pase de abordar en PDF.</li>
+                </ol>
+            </div>
+
+            <div class="qr-container">
+                <label><i class="fa-solid fa-qrcode"></i> Escanee para iniciar su check-in:</label>
+                <div id="qrcode"></div>
+            </div>
+        </div>
+
+        <div id="app-view" class="hidden">
+            <div id="step-search">
+                <div class="form-group">
+                    <label for="email"><i class="fa-regular fa-envelope"></i> Correo Electrónico:</label>
+                    <input type="email" id="email" placeholder="ejemplo@correo.com" required>
+                </div>
+                <button type="button" onclick="buscarUsuario()">
+                    <i class="fa-solid fa-magnifying-glass"></i> Consultar Reserva
+                </button>
+                <div id="error-msg" style="color:#f87171; font-size:12px; text-align:center; margin-top:12px; font-weight:600;" class="hidden">
+                    <i class="fa-solid fa-circle-exclamation"></i> Correo no encontrado en la lista de invitados.
+                </div>
+            </div>
+
+            <div id="step-details" class="hidden">
+                <div id="pdf-content">
+                    <div class="ticket-box">
+                        <div class="flight-route">
+                            <div class="route-city">
+                                <h4 id="disp-origen-code">ORG</h4>
+                                <span id="disp-origen">Origen</span>
+                            </div>
+                            <i class="fa-solid fa-plane-up" style="color: var(--gold-primary); font-size: 20px;"></i>
+                            <div class="route-city">
+                                <h4 id="disp-destino-code">DES</h4>
+                                <span id="disp-destino">Destino</span>
+                            </div>
+                        </div>
+
+                        <div class="info-grid">
+                            <div class="info-item"><span>Pasajero / Invitado</span><strong id="disp-nombre">-</strong></div>
+                            <div class="info-item"><span>Asiento</span><strong id="disp-asiento">-</strong></div>
+                            <div class="info-item"><span>Puerta</span><strong id="disp-puerta">-</strong></div>
+                            <div class="info-item"><span>Embarque</span><strong id="disp-embarque">-</strong></div>
+                            <div class="info-item"><span>Despegue</span><strong id="disp-despegue">-</strong></div>
+                            <div class="info-item"><span>Aterrizaje</span><strong id="disp-aterrizaje">-</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="upload-section">
+                    <div class="photo-hint">
+                        <i class="fa-solid fa-camera" style="font-size:20px; color: var(--gold-primary);"></i>
+                        <span>¡Sube una linda fotografía con tu grupo de viaje o acompañantes para compartir durante la ceremonia!</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="photo"><i class="fa-solid fa-image"></i> Seleccionar Fotografía:</label>
+                        <input type="file" id="photo" accept="image/*">
+                    </div>
+
+                    <button type="button" onclick="enviarFoto()">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Registrar Fotografía
+                    </button>
+                </div>
+
+                <div id="registered-section" class="hidden">
+                    <div class="registered-badge">
+                        <i class="fa-solid fa-circle-check"></i> Fotografía guardada correctamente.
+                    </div>
+                    <button type="button" class="btn-pdf" onclick="descargarPDF()">
+                        <i class="fa-solid fa-file-pdf"></i> Descargar Pase de Abordar (PDF)
+                    </button>
+                </div>
+
+                <div id="status-msg" style="margin-top: 10px; text-align: center; font-weight: 700; font-size:12px;"></div>
+
+                <button type="button" class="reset-btn" onclick="probarOtroUsuario()">
+                    <i class="fa-solid fa-rotate-left"></i> Consultar otra acreditación
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const esMovilDesdeQR = urlParams.get('empezar') === 'si';
+
+        if (esMovilDesdeQR) {
+            document.getElementById('landing-view').classList.add('hidden');
+            document.getElementById('app-view').classList.remove('hidden');
+        } else {
+            document.getElementById('landing-view').classList.remove('hidden');
+            document.getElementById('app-view').classList.add('hidden');
+
+            const urlBase = window.location.href.split('?')[0];
+            new QRCode(document.getElementById("qrcode"), {
+                text: urlBase + '?empezar=si',
+                width: 150,
+                height: 150
+            });
+        }
+
+        const listaAsistentes = [
+            { email: "mauricioesaualternativo@gmail.com", nombre: "Mauricio Esau Echenagucia", asiento: "6C", puerta: "A2", embarque: "11:00 am", despegue: "11:45 am", aterrizaje: "02:30 pm", origen: "Salta", destino: "Buenos Aires Aeroparque" },
+            { email: "sofia.martinez@ejemplo.com", nombre: "Sofía Martínez", asiento: "1A", puerta: "B1", embarque: "08:15 am", despegue: "09:00 am", aterrizaje: "10:45 am", origen: "Córdoba", destino: "Mendoza" },
+            { email: "carlos.gomez@ejemplo.com", nombre: "Carlos Gómez", asiento: "12F", puerta: "C3", embarque: "10:30 am", despegue: "11:15 am", aterrizaje: "01:00 pm", origen: "Buenos Aires Ezeiza", destino: "Bariloche" },
+            { email: "lucia.ferreyra@ejemplo.com", nombre: "Lucía Ferreyra", asiento: "4B", puerta: "A1", embarque: "01:00 pm", despegue: "01:40 pm", aterrizaje: "03:10 pm", origen: "Rosario", destino: "Salta" },
+            { email: "diego.alvarez@ejemplo.com", nombre: "Diego Álvarez", asiento: "18D", puerta: "B4", embarque: "03:30 pm", despegue: "04:15 pm", aterrizaje: "06:00 pm", origen: "Mendoza", destino: "Buenos Aires Aeroparque" },
+            { email: "valentina.diaz@ejemplo.com", nombre: "Valentina Díaz", asiento: "2C", puerta: "A3", embarque: "05:00 pm", despegue: "05:40 pm", aterrizaje: "07:20 pm", origen: "Iguazú", destino: "Córdoba" },
+            { email: "mateo.romero@ejemplo.com", nombre: "Mateo Romero", asiento: "15A", puerta: "C2", embarque: "06:15 pm", despegue: "07:00 pm", aterrizaje: "09:10 pm", origen: "Neuquén", destino: "Buenos Aires Ezeiza" },
+            { email: "camila.torres@ejemplo.com", nombre: "Camila Torres", asiento: "8E", puerta: "B2", embarque: "08:00 pm", despegue: "08:45 pm", aterrizaje: "10:30 pm", origen: "Tucumán", destino: "Rosario" },
+            { email: "joaquin.sosa@ejemplo.com", nombre: "Joaquín Sosa", asiento: "22F", puerta: "A4", embarque: "09:30 pm", despegue: "10:15 pm", aterrizaje: "11:55 pm", origen: "Ushuaia", destino: "El Calafate" },
+            { email: "elena.benitez@ejemplo.com", nombre: "Elena Benítez", asiento: "5F", puerta: "C1", embarque: "11:00 pm", despegue: "11:40 pm", aterrizaje: "01:20 am", origen: "Comodoro Rivadavia", destino: "Buenos Aires Aeroparque" }
+        ]; 
+
+        let usuarioActual = null; 
+
+        function buscarUsuario() {
+            const emailInput = document.getElementById('email').value.trim().toLowerCase(); 
+            const errorMsg = document.getElementById('error-msg'); 
+            
+            usuarioActual = listaAsistentes.find(u => u.email.trim().toLowerCase() === emailInput); 
+            
+            if (usuarioActual) { 
+                errorMsg.classList.add('hidden'); 
+                document.getElementById('step-search').classList.add('hidden'); 
+                
+                document.getElementById('disp-nombre').innerText = usuarioActual.nombre; 
+                document.getElementById('disp-origen').innerText = usuarioActual.origen; 
+                document.getElementById('disp-origen-code').innerText = usuarioActual.origen.substring(0,3).toUpperCase();
+                document.getElementById('disp-destino').innerText = usuarioActual.destino; 
+                document.getElementById('disp-destino-code').innerText = usuarioActual.destino.substring(0,3).toUpperCase();
+                document.getElementById('disp-asiento').innerText = usuarioActual.asiento; 
+                document.getElementById('disp-puerta').innerText = usuarioActual.puerta; 
+                document.getElementById('disp-embarque').innerText = usuarioActual.embarque; 
+                document.getElementById('disp-despegue').innerText = usuarioActual.despegue; 
+                document.getElementById('disp-aterrizaje').innerText = usuarioActual.aterrizaje; 
+                
+                const yaSubioFoto = localStorage.getItem('foto_subida_' + usuarioActual.email);
+                
+                if (yaSubioFoto) {
+                    document.getElementById('upload-section').classList.add('hidden');
+                    document.getElementById('registered-section').classList.remove('hidden');
+                } else {
+                    document.getElementById('upload-section').classList.remove('hidden');
+                    document.getElementById('registered-section').classList.add('hidden');
+                }
+
+                document.getElementById('step-details').classList.remove('hidden'); 
+            } else { 
+                errorMsg.classList.remove('hidden'); 
+            } 
+        } 
+
+        function enviarFoto() {
+            const photoInput = document.getElementById('photo'); 
+            const statusMsg = document.getElementById('status-msg'); 
+            
+            if (!photoInput.files || photoInput.files.length === 0) { 
+                alert("Por favor selecciona una foto de tu galería o toma una nueva."); 
+                return; 
+            } 
+            
+            const file = photoInput.files[0]; 
+            statusMsg.style.color = "#f59e0b"; 
+            statusMsg.innerText = "Subiendo imagen al servidor..."; 
+
+            const formData = new FormData();
+            formData.append("image", file);
+            
+            const API_KEY = "a0626c644e5b18323b4f51b88d4530d4"; 
+
+            fetch(`https://api.imgbb.com/1/upload?key=${API_KEY}`, {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    statusMsg.style.color = "#10b981";
+                    statusMsg.innerText = "¡Fotografía subida con éxito!";
+                    
+                    localStorage.setItem('foto_subida_' + usuarioActual.email, 'true');
+
+                    setTimeout(() => {
+                        document.getElementById('upload-section').classList.add('hidden');
+                        document.getElementById('registered-section').classList.remove('hidden');
+                        statusMsg.innerText = "";
+                    }, 1200);
+
+                } else {
+                    statusMsg.style.color = "#ef4444";
+                    statusMsg.innerText = "Error al procesar la imagen.";
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                statusMsg.style.color = "#ef4444";
+                statusMsg.innerText = "Error de conexión con el servidor.";
+            });
+        }
+
+        function descargarPDF() {
+            const element = document.getElementById('pdf-content');
+            const opt = {
+                margin:       8,
+                filename:     `Boleto_${usuarioActual.nombre.replace(/ /g, "_")}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a5', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+
+        function probarOtroUsuario() {
+            document.getElementById('step-details').classList.add('hidden');
+            document.getElementById('step-search').classList.remove('hidden');
+            document.getElementById('email').value = "";
+            document.getElementById('status-msg').innerText = "";
+            document.getElementById('photo').value = "";
+        }
+    </script>
+</body>
+</html>
