@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check-in & Tarjeta de Embarque | Premios Bitácora</title>
     <!-- Google Fonts & FontAwesome Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Librerías QR y PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -13,22 +13,24 @@
     
     <style>
         :root {
-            --bg-dark: #0b1120;
+            --bg-dark: #050b14;
             --card-dark: #0f172a;
-            --gold-primary: #f59e0b;
-            --gold-light: #fbbf24;
-            --gold-dark: #d97706;
+            --navy-header: #0a192f;
+            --gold-primary: #d97706;
+            --gold-light: #f59e0b;
+            --gold-accent: #fbbf24;
             --text-light: #f8fafc;
-            --text-muted: #94a3b8;
             --border-gold: rgba(245, 158, 11, 0.4);
-            --success: #10b981;
+            --ticket-bg: #fdfbf7;
+            --ticket-text: #0f172a;
+            --ticket-muted: #64748b;
         }
 
         * { box-sizing: border-box; }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, #020617 0%, #0b1120 50%, #0f172a 100%);
+            background: linear-gradient(135deg, #020617 0%, #080f1e 50%, #0f172a 100%);
             background-attachment: fixed;
             display: flex;
             justify-content: center;
@@ -40,12 +42,12 @@
         }
 
         .card {
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(15, 23, 42, 0.96);
             backdrop-filter: blur(12px);
-            padding: 28px;
+            padding: 24px;
             border-radius: 20px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-            max-width: 480px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            max-width: 620px;
             width: 100%;
             position: relative;
             border: 1px solid var(--border-gold);
@@ -53,61 +55,58 @@
 
         .card-header {
             text-align: center;
-            margin-bottom: 22px;
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-            padding: 20px;
+            margin-bottom: 20px;
+            background: linear-gradient(180deg, #0a192f 0%, #0f172a 100%);
+            padding: 18px;
             border-radius: 16px;
             border: 1px solid rgba(245, 158, 11, 0.3);
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.4);
         }
 
         .card-header i.logo-icon {
-            font-size: 38px;
-            color: var(--gold-primary);
-            margin-bottom: 8px;
+            font-size: 32px;
+            color: var(--gold-light);
+            margin-bottom: 6px;
         }
 
         .card-header h2 {
             margin: 0;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
-            letter-spacing: 1px;
-            background: linear-gradient(to right, #ffffff, var(--gold-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            letter-spacing: 1.5px;
+            color: #ffffff;
             text-transform: uppercase;
         }
 
         .card-header p {
-            margin: 6px 0 0;
-            font-size: 11px;
-            color: var(--gold-primary);
+            margin: 4px 0 0;
+            font-size: 10px;
+            color: var(--gold-light);
             text-transform: uppercase;
-            letter-spacing: 2.5px;
-            font-weight: 600;
+            letter-spacing: 2px;
+            font-weight: 700;
         }
 
         .instruction-box {
             background: rgba(245, 158, 11, 0.08);
             border: 1px solid var(--border-gold);
-            border-left: 5px solid var(--gold-primary);
-            padding: 16px;
+            border-left: 5px solid var(--gold-light);
+            padding: 14px;
             border-radius: 12px;
-            margin-bottom: 20px;
-            font-size: 13px;
+            margin-bottom: 18px;
+            font-size: 12px;
             color: #fef3c7;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
-        .instruction-box ol { margin: 8px 0 0; padding-left: 20px; }
-        .instruction-box li { margin-bottom: 6px; }
+        .instruction-box ol { margin: 6px 0 0; padding-left: 18px; }
+        .instruction-box li { margin-bottom: 4px; }
 
         .qr-container {
             text-align: center;
             background: #ffffff;
-            padding: 20px;
+            padding: 18px;
             border-radius: 16px;
-            border: 2px solid var(--gold-primary);
+            border: 2px solid var(--gold-light);
             margin: 15px 0;
             display: flex;
             flex-direction: column;
@@ -117,140 +116,282 @@
         .qr-container label {
             color: #0f172a;
             font-weight: 700;
-            margin-bottom: 12px;
-            font-size: 13px;
+            margin-bottom: 10px;
+            font-size: 12px;
         }
 
-        .form-group { margin-bottom: 18px; }
+        .form-group { margin-bottom: 16px; }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
             color: #f1f5f9;
         }
 
         input[type="email"] {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             border: 1px solid #334155;
-            border-radius: 10px;
+            border-radius: 8px;
             font-family: inherit;
-            font-size: 14px;
-            transition: all 0.3s;
+            font-size: 13px;
             background: #1e293b;
             color: white;
         }
 
         input[type="email"]:focus {
             outline: none;
-            border-color: var(--gold-primary);
+            border-color: var(--gold-light);
             box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
         }
 
         input[type="file"] {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background: #1e293b;
-            border: 1px dashed var(--gold-primary);
-            border-radius: 10px;
+            border: 1px dashed var(--gold-light);
+            border-radius: 8px;
             cursor: pointer;
             font-family: inherit;
-            font-size: 13px;
+            font-size: 12px;
             color: #cbd5e1;
         }
 
         button {
             width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-primary) 100%);
-            color: #0f172a;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-light) 100%);
+            color: #050b14;
             border: none;
-            border-radius: 10px;
-            font-size: 14px;
+            border-radius: 8px;
+            font-size: 13px;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
         }
 
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-light) 100%);
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-accent) 100%);
         }
 
         .btn-pdf {
-            background: linear-gradient(135deg, #059669 0%, var(--success) 100%);
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
             color: white;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-            margin-top: 12px;
-        }
-
-        .ticket-box {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: white;
-            border-radius: 14px;
-            padding: 20px;
             margin-top: 15px;
-            position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            border: 1px solid var(--border-gold);
         }
 
-        .flight-route {
+        /* =========================================================
+           ESTILO RÉPLICA EXACTA DEL BOARDING PASS
+        ========================================================= */
+        .boarding-pass-wrapper {
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .boarding-pass {
+            width: 550px;
+            background-color: var(--ticket-bg);
+            color: var(--ticket-text);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid #cbd5e1;
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0 auto;
+        }
+
+        /* Lateral izquierdo azul */
+        .bp-left-strip {
+            background: var(--navy-header);
+            width: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            color: var(--gold-light);
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            padding: 10px 0;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Cuerpo Principal */
+        .bp-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bp-header {
+            background: var(--navy-header);
+            color: white;
+            padding: 8px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 12px;
-            border-bottom: 1px dashed var(--border-gold);
-            text-align: center;
+            border-bottom: 2px solid var(--gold-light);
         }
 
-        .route-city h4 { margin: 0; font-size: 20px; color: var(--gold-light); font-weight: 800; }
-        .route-city span { font-size: 11px; color: var(--text-muted); }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .info-item { font-size: 12px; }
-
-        .info-item span {
-            display: block;
-            color: var(--text-muted);
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .info-item strong {
-            color: #ffffff;
+        .bp-header-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gold-accent);
+            font-weight: 800;
             font-size: 13px;
-            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .bp-header-sub {
+            font-size: 8px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .bp-body {
+            padding: 12px 14px;
+            background: var(--ticket-bg);
+        }
+
+        .bp-row {
+            margin-bottom: 10px;
+        }
+
+        .bp-label {
+            font-size: 8px;
+            color: var(--ticket-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            display: block;
+        }
+
+        .bp-value-large {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--ticket-text);
+            text-transform: uppercase;
+        }
+
+        .bp-route-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(10, 25, 47, 0.03);
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px dashed #cbd5e1;
+            margin: 8px 0;
+        }
+
+        .bp-city h3 {
+            margin: 0;
+            font-size: 13px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .bp-city span {
+            font-size: 8px;
+            color: var(--ticket-muted);
+        }
+
+        .bp-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 8px;
+        }
+
+        .bp-grid-val {
+            font-size: 11px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .bp-footer-stamps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding-top: 6px;
+            border-top: 1px dashed #cbd5e1;
+        }
+
+        .barcode-sim {
+            height: 26px;
+            width: 140px;
+            background: repeating-linear-gradient(
+                90deg,
+                #0f172a,
+                #0f172a 2px,
+                transparent 2px,
+                transparent 4px
+            );
+        }
+
+        /* Talón separable derecho */
+        .bp-stub {
+            width: 140px;
+            border-left: 2px dashed #cbd5e1;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .bp-stub-header {
+            background: #e2e8f0;
+            padding: 6px 8px;
+            font-size: 8px;
+            font-weight: 800;
+            color: #0f172a;
+            text-align: center;
+            border-bottom: 1px solid #cbd5e1;
+            text-transform: uppercase;
+        }
+
+        .bp-stub-body {
+            padding: 8px;
+            flex: 1;
+        }
+
+        .bp-stub-footer {
+            background: var(--navy-header);
+            color: var(--gold-accent);
+            padding: 6px;
+            text-align: center;
+            font-size: 7px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .photo-hint {
             background: rgba(245, 158, 11, 0.1);
             border: 1px solid var(--border-gold);
             color: #fef3c7;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 12px;
-            margin: 15px 0;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            margin: 12px 0;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .hidden { display: none !important; }
@@ -258,21 +399,21 @@
         .registered-badge {
             background: rgba(16, 185, 129, 0.15);
             color: #6ee7b7;
-            padding: 14px;
-            border-radius: 10px;
+            padding: 12px;
+            border-radius: 8px;
             text-align: center;
             font-weight: 700;
-            margin-top: 15px;
+            margin-top: 12px;
             border: 1px solid rgba(16, 185, 129, 0.4);
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .reset-btn {
             background: #334155;
             color: white;
-            margin-top: 15px;
+            margin-top: 12px;
             font-size: 11px;
-            padding: 10px;
+            padding: 8px;
             box-shadow: none;
         }
     </style>
@@ -286,6 +427,7 @@
             <p>Pase de Abordar & Galardones</p>
         </div>
 
+        <!-- VISTA 1: Kiosco / QR -->
         <div id="landing-view">
             <div class="instruction-box">
                 <strong><i class="fa-solid fa-star"></i> Bienvenid@ a los Premios Bitácora:</strong>
@@ -293,8 +435,8 @@
                     <li>Escanee el código QR inferior con la cámara de su celular.</li>
                     <li>Ingrese su correo electrónico registrado y toque <b>"Consultar Reserva"</b>.</li>
                     <li>Verifique sus detalles de acreditación.</li>
-                    <li>Suba una fotografía especial con sus acompañantes o grupo para la presentación del evento.</li>
-                    <li>Obtenga y descargue su pase de abordar en PDF.</li>
+                    <li>Suba una fotografía especial con sus acompañantes o grupo para la presentación.</li>
+                    <li>Obtenga y descargue su pase de abordar oficial en PDF.</li>
                 </ol>
             </div>
 
@@ -304,7 +446,9 @@
             </div>
         </div>
 
+        <!-- VISTA 2: Aplicación Móvil -->
         <div id="app-view" class="hidden">
+            <!-- Consulta de Usuario -->
             <div id="step-search">
                 <div class="form-group">
                     <label for="email"><i class="fa-regular fa-envelope"></i> Correo Electrónico:</label>
@@ -313,40 +457,107 @@
                 <button type="button" onclick="buscarUsuario()">
                     <i class="fa-solid fa-magnifying-glass"></i> Consultar Reserva
                 </button>
-                <div id="error-msg" style="color:#f87171; font-size:12px; text-align:center; margin-top:12px; font-weight:600;" class="hidden">
+                <div id="error-msg" style="color:#f87171; font-size:12px; text-align:center; margin-top:10px; font-weight:600;" class="hidden">
                     <i class="fa-solid fa-circle-exclamation"></i> Correo no encontrado en la lista de invitados.
                 </div>
             </div>
 
+            <!-- Pase de Abordar y Subida -->
             <div id="step-details" class="hidden">
-                <div id="pdf-content">
-                    <div class="ticket-box">
-                        <div class="flight-route">
-                            <div class="route-city">
-                                <h4 id="disp-origen-code">ORG</h4>
-                                <span id="disp-origen">Origen</span>
+                <div class="boarding-pass-wrapper">
+                    <!-- TICKET IMPRIMIBLE PDF -->
+                    <div id="pdf-content" class="boarding-pass">
+                        <div class="bp-left-strip">PREMIOS BITÁCORA</div>
+                        
+                        <div class="bp-main">
+                            <div class="bp-header">
+                                <div class="bp-header-title">
+                                    <i class="fa-solid fa-compass"></i> BOARDING PASS
+                                </div>
+                                <div class="bp-header-sub">Premios Bitácora • 2026</div>
                             </div>
-                            <i class="fa-solid fa-plane-up" style="color: var(--gold-primary); font-size: 20px;"></i>
-                            <div class="route-city">
-                                <h4 id="disp-destino-code">DES</h4>
-                                <span id="disp-destino">Destino</span>
+                            
+                            <div class="bp-body">
+                                <div class="bp-row">
+                                    <span class="bp-label">Pasajero / Invitado</span>
+                                    <span class="bp-value-large" id="disp-nombre">-</span>
+                                </div>
+
+                                <div class="bp-route-container">
+                                    <div class="bp-city">
+                                        <span class="bp-label">Origen</span>
+                                        <h3 id="disp-origen">BUENOS AIRES</h3>
+                                        <span id="disp-origen-code">EZE</span>
+                                    </div>
+                                    <i class="fa-solid fa-plane" style="color: var(--gold-primary); font-size: 16px;"></i>
+                                    <div class="bp-city" style="text-align: right;">
+                                        <span class="bp-label">Destino</span>
+                                        <h3 id="disp-destino">MENDOZA</h3>
+                                        <span id="disp-destino-code">MDZ</span>
+                                    </div>
+                                </div>
+
+                                <div class="bp-grid-4">
+                                    <div>
+                                        <span class="bp-label">Vuelo</span>
+                                        <div class="bp-grid-val">PB 2026</div>
+                                    </div>
+                                    <div>
+                                        <span class="bp-label">Embarque</span>
+                                        <div class="bp-grid-val" id="disp-embarque">18:40</div>
+                                    </div>
+                                    <div>
+                                        <span class="bp-label">Puerta</span>
+                                        <div class="bp-grid-val" id="disp-puerta">B12</div>
+                                    </div>
+                                    <div>
+                                        <span class="bp-label">Asiento</span>
+                                        <div class="bp-grid-val" id="disp-asiento">07A</div>
+                                    </div>
+                                </div>
+
+                                <div class="bp-footer-stamps">
+                                    <div class="barcode-sim"></div>
+                                    <div style="font-size: 8px; color: var(--ticket-muted); text-align: right; font-weight: 700;">
+                                        GRANDES DESTINOS<br>GRANDES HISTORIAS
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="info-grid">
-                            <div class="info-item"><span>Pasajero / Invitado</span><strong id="disp-nombre">-</strong></div>
-                            <div class="info-item"><span>Asiento</span><strong id="disp-asiento">-</strong></div>
-                            <div class="info-item"><span>Puerta</span><strong id="disp-puerta">-</strong></div>
-                            <div class="info-item"><span>Embarque</span><strong id="disp-embarque">-</strong></div>
-                            <div class="info-item"><span>Despegue</span><strong id="disp-despegue">-</strong></div>
-                            <div class="info-item"><span>Aterrizaje</span><strong id="disp-aterrizaje">-</strong></div>
+                        <!-- TALÓN SEPARABLE DERECHO -->
+                        <div class="bp-stub">
+                            <div class="bp-stub-header">Premios Bitácora</div>
+                            <div class="bp-stub-body">
+                                <div style="margin-bottom: 6px;">
+                                    <span class="bp-label">Pasajero</span>
+                                    <div style="font-size: 9px; font-weight: 800;" id="stub-nombre">-</div>
+                                </div>
+                                <div style="margin-bottom: 6px;">
+                                    <span class="bp-label">Vuelo</span>
+                                    <div style="font-size: 9px; font-weight: 700;">PB 2026</div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>
+                                        <span class="bp-label">Puerta</span>
+                                        <div style="font-size: 9px; font-weight: 700;" id="stub-puerta">B12</div>
+                                    </div>
+                                    <div>
+                                        <span class="bp-label">Asiento</span>
+                                        <div style="font-size: 9px; font-weight: 700;" id="stub-asiento">07A</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bp-stub-footer">
+                                VIAJES • CULTURA
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div id="upload-section">
                     <div class="photo-hint">
-                        <i class="fa-solid fa-camera" style="font-size:20px; color: var(--gold-primary);"></i>
+                        <i class="fa-solid fa-camera" style="font-size:18px; color: var(--gold-light);"></i>
                         <span>¡Sube una linda fotografía con tu grupo de viaje o acompañantes para compartir durante la ceremonia!</span>
                     </div>
 
@@ -392,22 +603,17 @@
             const urlBase = window.location.href.split('?')[0];
             new QRCode(document.getElementById("qrcode"), {
                 text: urlBase + '?empezar=si',
-                width: 150,
-                height: 150
+                width: 140,
+                height: 140
             });
         }
 
         const listaAsistentes = [
-            { email: "mauricioesaualternativo@gmail.com", nombre: "Mauricio Esau Echenagucia", asiento: "6C", puerta: "A2", embarque: "11:00 am", despegue: "11:45 am", aterrizaje: "02:30 pm", origen: "Salta", destino: "Buenos Aires Aeroparque" },
-            { email: "sofia.martinez@ejemplo.com", nombre: "Sofía Martínez", asiento: "1A", puerta: "B1", embarque: "08:15 am", despegue: "09:00 am", aterrizaje: "10:45 am", origen: "Córdoba", destino: "Mendoza" },
-            { email: "carlos.gomez@ejemplo.com", nombre: "Carlos Gómez", asiento: "12F", puerta: "C3", embarque: "10:30 am", despegue: "11:15 am", aterrizaje: "01:00 pm", origen: "Buenos Aires Ezeiza", destino: "Bariloche" },
-            { email: "lucia.ferreyra@ejemplo.com", nombre: "Lucía Ferreyra", asiento: "4B", puerta: "A1", embarque: "01:00 pm", despegue: "01:40 pm", aterrizaje: "03:10 pm", origen: "Rosario", destino: "Salta" },
-            { email: "diego.alvarez@ejemplo.com", nombre: "Diego Álvarez", asiento: "18D", puerta: "B4", embarque: "03:30 pm", despegue: "04:15 pm", aterrizaje: "06:00 pm", origen: "Mendoza", destino: "Buenos Aires Aeroparque" },
-            { email: "valentina.diaz@ejemplo.com", nombre: "Valentina Díaz", asiento: "2C", puerta: "A3", embarque: "05:00 pm", despegue: "05:40 pm", aterrizaje: "07:20 pm", origen: "Iguazú", destino: "Córdoba" },
-            { email: "mateo.romero@ejemplo.com", nombre: "Mateo Romero", asiento: "15A", puerta: "C2", embarque: "06:15 pm", despegue: "07:00 pm", aterrizaje: "09:10 pm", origen: "Neuquén", destino: "Buenos Aires Ezeiza" },
-            { email: "camila.torres@ejemplo.com", nombre: "Camila Torres", asiento: "8E", puerta: "B2", embarque: "08:00 pm", despegue: "08:45 pm", aterrizaje: "10:30 pm", origen: "Tucumán", destino: "Rosario" },
-            { email: "joaquin.sosa@ejemplo.com", nombre: "Joaquín Sosa", asiento: "22F", puerta: "A4", embarque: "09:30 pm", despegue: "10:15 pm", aterrizaje: "11:55 pm", origen: "Ushuaia", destino: "El Calafate" },
-            { email: "elena.benitez@ejemplo.com", nombre: "Elena Benítez", asiento: "5F", puerta: "C1", embarque: "11:00 pm", despegue: "11:40 pm", aterrizaje: "01:20 am", origen: "Comodoro Rivadavia", destino: "Buenos Aires Aeroparque" }
+            { email: "mauricioesaualternativo@gmail.com", nombre: "Mauricio Esau Echenagucia", asiento: "07A", puerta: "B12", embarque: "18:40", despegue: "19:20", aterrizaje: "21:00", origen: "Buenos Aires", destino: "Mendoza" },
+            { email: "sofia.martinez@ejemplo.com", nombre: "Sofía Martínez", asiento: "01A", puerta: "B01", embarque: "08:15", despegue: "09:00", aterrizaje: "10:45", origen: "Córdoba", destino: "Mendoza" },
+            { email: "carlos.gomez@ejemplo.com", nombre: "Carlos Gómez", asiento: "12F", puerta: "C03", embarque: "10:30", despegue: "11:15", aterrizaje: "13:00", origen: "Buenos Aires", destino: "Bariloche" },
+            { email: "lucia.ferreyra@ejemplo.com", nombre: "Lucía Ferreyra", asiento: "04B", puerta: "A01", embarque: "13:00", despegue: "13:40", aterrizaje: "15:10", origen: "Rosario", destino: "Salta" },
+            { email: "diego.alvarez@ejemplo.com", nombre: "Diego Álvarez", asiento: "18D", puerta: "B04", embarque: "15:30", despegue: "16:15", aterrizaje: "18:00", origen: "Mendoza", destino: "Buenos Aires" }
         ]; 
 
         let usuarioActual = null; 
@@ -422,17 +628,21 @@
                 errorMsg.classList.add('hidden'); 
                 document.getElementById('step-search').classList.add('hidden'); 
                 
+                // Cargar datos en el ticket principal
                 document.getElementById('disp-nombre').innerText = usuarioActual.nombre; 
-                document.getElementById('disp-origen').innerText = usuarioActual.origen; 
+                document.getElementById('disp-origen').innerText = usuarioActual.origen.toUpperCase(); 
                 document.getElementById('disp-origen-code').innerText = usuarioActual.origen.substring(0,3).toUpperCase();
-                document.getElementById('disp-destino').innerText = usuarioActual.destino; 
+                document.getElementById('disp-destino').innerText = usuarioActual.destino.toUpperCase(); 
                 document.getElementById('disp-destino-code').innerText = usuarioActual.destino.substring(0,3).toUpperCase();
                 document.getElementById('disp-asiento').innerText = usuarioActual.asiento; 
                 document.getElementById('disp-puerta').innerText = usuarioActual.puerta; 
                 document.getElementById('disp-embarque').innerText = usuarioActual.embarque; 
-                document.getElementById('disp-despegue').innerText = usuarioActual.despegue; 
-                document.getElementById('disp-aterrizaje').innerText = usuarioActual.aterrizaje; 
                 
+                // Cargar datos en el talón separable
+                document.getElementById('stub-nombre').innerText = usuarioActual.nombre;
+                document.getElementById('stub-asiento').innerText = usuarioActual.asiento;
+                document.getElementById('stub-puerta').innerText = usuarioActual.puerta;
+
                 const yaSubioFoto = localStorage.getItem('foto_subida_' + usuarioActual.email);
                 
                 if (yaSubioFoto) {
@@ -500,11 +710,11 @@
         function descargarPDF() {
             const element = document.getElementById('pdf-content');
             const opt = {
-                margin:       8,
-                filename:     `Boleto_${usuarioActual.nombre.replace(/ /g, "_")}.pdf`,
+                margin:       [10, 5, 10, 5],
+                filename:     `Boarding_Pass_${usuarioActual.nombre.replace(/ /g, "_")}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'mm', format: 'a5', orientation: 'portrait' }
+                html2canvas:  { scale: 2.5, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a5', orientation: 'landscape' }
             };
             html2pdf().set(opt).from(element).save();
         }
