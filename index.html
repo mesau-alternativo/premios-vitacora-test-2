@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Check-in & Tarjeta de Embarque | Turismo Global</title>
-    <!-- Google Fonts & FontAwesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Check-in & Tarjeta de Embarque | Tesis Viajes</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Librerías QR y PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -13,12 +13,13 @@
     
     <style>
         :root {
-            --primary: #1e3a8a;
+            --primary: #0284c7;
             --primary-dark: #0f172a;
-            --accent: #f59e0b;
-            --bg-color: #f1f5f9;
-            --card-bg: #ffffff;
-            --text-main: #334155;
+            --accent-sunset: #f97316;
+            --gold: #fbbf24;
+            --bg-gradient: linear-gradient(135deg, #0284c7 0%, #3b82f6 40%, #f97316 100%);
+            --card-bg: rgba(255, 255, 255, 0.96);
+            --text-main: #1e293b;
             --success: #10b981;
         }
 
@@ -26,78 +27,102 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             color: var(--text-main);
         }
 
         .card {
             background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
             max-width: 480px;
             width: 100%;
             position: relative;
-            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.5);
         }
 
         .card-header {
             text-align: center;
-            margin-bottom: 25px;
-            border-bottom: 2px dashed #e2e8f0;
-            padding-bottom: 15px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            padding: 18px;
+            border-radius: 18px;
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2);
         }
 
         .card-header i.logo-icon {
-            font-size: 38px;
-            color: var(--primary);
-            margin-bottom: 8px;
+            font-size: 36px;
+            color: var(--gold);
+            margin-bottom: 6px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
         }
 
         .card-header h2 {
             margin: 0;
-            color: var(--primary-dark);
             font-size: 22px;
-            font-weight: 700;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            background: linear-gradient(to right, #ffffff, var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .card-header p {
             margin: 4px 0 0;
-            font-size: 12px;
-            color: #64748b;
+            font-size: 11px;
+            color: #cbd5e1;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            font-weight: 600;
         }
 
         .instruction-box {
-            background-color: #fef3c7;
-            border-left: 5px solid var(--accent);
-            padding: 15px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border: 2px solid #fed7aa;
+            border-left: 6px solid var(--accent-sunset);
+            padding: 16px;
+            border-radius: 14px;
             margin-bottom: 20px;
             font-size: 13px;
-            color: #78350f;
+            color: #9a3412;
             line-height: 1.6;
         }
 
-        .instruction-box ol { margin: 8px 0 0; padding-left: 18px; }
+        .instruction-box ol { margin: 8px 0 0; padding-left: 20px; }
+        .instruction-box li { margin-bottom: 6px; }
 
         .qr-container {
             text-align: center;
-            background: #f8fafc;
-            padding: 18px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 16px;
+            border: 2px dashed #0284c7;
             margin: 15px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .qr-container label {
+            color: var(--primary-dark);
+            font-weight: 700;
+            margin-bottom: 10px;
         }
 
         .form-group { margin-bottom: 18px; }
@@ -105,61 +130,86 @@
         label {
             display: block;
             margin-bottom: 6px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 13px;
             color: var(--primary-dark);
         }
 
-        input[type="email"], input[type="file"] {
+        input[type="email"] {
             width: 100%;
-            padding: 12px;
-            border: 1.5px solid #cbd5e1;
-            border-radius: 8px;
+            padding: 14px;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
             font-family: inherit;
+            font-size: 14px;
             transition: all 0.3s;
+            background: #f8fafc;
         }
 
         input[type="email"]:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15);
+        }
+
+        /* Estilo para selector de archivo con opción de cámara o galería */
+        .file-input-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            background: #f1f5f9;
+            border: 2px dashed #0284c7;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 13px;
+            color: #334155;
         }
 
         button {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, var(--primary) 0%, #2563eb 100%);
+            background: linear-gradient(135deg, var(--accent-sunset) 0%, #ea580c 100%);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 15px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.4);
         }
 
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 12px 20px -3px rgba(249, 115, 22, 0.5);
         }
 
         .btn-pdf {
-            background: linear-gradient(135deg, #059669 0%, var(--success) 100%);
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.4);
             margin-top: 12px;
         }
 
-        /* Pase de Abordar Estilo Ticket */
+        /* Pase de Abordar Estilo Ticket Vibrante */
         .ticket-box {
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            border-radius: 12px;
-            padding: 18px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 20px;
             margin-top: 15px;
             position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border: 2px solid var(--gold);
         }
 
         .flight-route {
@@ -167,13 +217,13 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed rgba(255,255,255,0.2);
             text-align: center;
         }
 
-        .route-city h4 { margin: 0; font-size: 18px; color: var(--primary); }
-        .route-city span { font-size: 11px; color: #64748b; }
+        .route-city h4 { margin: 0; font-size: 20px; color: var(--gold); font-weight: 800; }
+        .route-city span { font-size: 11px; color: #94a3b8; }
 
         .info-grid {
             display: grid;
@@ -181,32 +231,46 @@
             gap: 12px;
         }
 
-        .info-item {
-            font-size: 12px;
-        }
+        .info-item { font-size: 12px; }
 
         .info-item span {
             display: block;
-            color: #64748b;
+            color: #94a3b8;
             font-size: 10px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .info-item strong {
-            color: var(--primary-dark);
+            color: #ffffff;
             font-size: 13px;
+            font-weight: 600;
+        }
+
+        .photo-hint {
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            color: #0369a1;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .hidden { display: none !important; }
 
         .registered-badge {
-            background-color: #d1fae5;
+            background: #d1fae5;
             color: #065f46;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 12px;
             text-align: center;
-            font-weight: 600;
+            font-weight: 700;
             margin-top: 15px;
+            border: 2px solid #a7f3d0;
             font-size: 14px;
         }
 
@@ -215,6 +279,7 @@
             margin-top: 15px;
             font-size: 12px;
             padding: 10px;
+            box-shadow: none;
         }
     </style>
 </head>
@@ -223,46 +288,46 @@
     <div class="card">
         <div class="card-header">
             <i class="fa-solid fa-plane-departure logo-icon"></i>
-            <h2>Turismo Explorer</h2>
-            <p>Sistema de Registro & Check-in</p>
+            <h2>Agencia de Viajes Tesis</h2>
+            <p>Registro & Pase de Abordar</p>
         </div>
 
-        <!-- VISTA 1: Landing (PC / Kiosco) -->
+        <!-- VISTA 1: Landing / Pantalla Principal con QR e Instructivo -->
         <div id="landing-view">
             <div class="instruction-box">
-                <strong><i class="fa-solid fa-circle-info"></i> Instructivo para Pasajeros:</strong>
+                <strong><i class="fa-solid fa-compass"></i> Guía Paso a Paso para Pasajeros:</strong>
                 <ol>
-                    <li>Escanee el código QR inferior utilizando la cámara de su celular.</li>
-                    <li>Ingrese su correo electrónico registrado y presione <b>"Consultar Datos"</b>.</li>
-                    <li>Verifique los detalles de su vuelo.</li>
-                    <li>Tome o seleccione una fotografía clara de su rostro.</li>
-                    <li>Confirme el envío y descargue su pase de abordar en formato PDF.</li>
+                    <li>Escanee el código QR que ve aquí abajo utilizando la cámara de su celular.</li>
+                    <li>Escriba su correo electrónico registrado y toque el botón <b>"Consultar Reserva"</b>.</li>
+                    <li>Revise tranquilamente los datos de su vuelo en el pase de abordar.</li>
+                    <li>Sube una linda fotografía compartiendo el momento con tus compañeros o grupo de viaje.</li>
+                    <li>Descargue su comprobante en PDF como recuerdo de la presentación.</li>
                 </ol>
             </div>
 
             <div class="qr-container">
-                <label><i class="fa-solid fa-qrcode"></i> Escanee aquí con su móvil:</label>
+                <label><i class="fa-solid fa-qrcode"></i> Escanee aquí con su teléfono:</label>
                 <div id="qrcode"></div>
             </div>
         </div>
 
-        <!-- VISTA 2: Aplicación Móvil (Celular) -->
+        <!-- VISTA 2: Aplicación Móvil al escanear el QR -->
         <div id="app-view" class="hidden">
-            <!-- Paso 1: Búsqueda -->
+            <!-- Paso 1: Consultar por Mail -->
             <div id="step-search">
                 <div class="form-group">
-                    <label for="email"><i class="fa-regular fa-envelope"></i> Correo electrónico del titular:</label>
+                    <label for="email"><i class="fa-regular fa-envelope"></i> Ingresa tu correo electrónico:</label>
                     <input type="email" id="email" placeholder="ejemplo@correo.com" required>
                 </div>
                 <button type="button" onclick="buscarUsuario()">
                     <i class="fa-solid fa-magnifying-glass"></i> Consultar Reserva
                 </button>
-                <div id="error-msg" style="color:#ef4444; font-size:13px; text-align:center; margin-top:10px;" class="hidden">
-                    Correo no registrado en la lista de pasajeros.
+                <div id="error-msg" style="color:#ef4444; font-size:13px; text-align:center; margin-top:12px; font-weight:600;" class="hidden">
+                    <i class="fa-solid fa-circle-exclamation"></i> El correo no coincide con la lista de pasajeros.
                 </div>
             </div>
 
-            <!-- Paso 2: Detalles y Subida -->
+            <!-- Paso 2: Pase de Abordar y Subir Foto -->
             <div id="step-details" class="hidden">
                 <div id="pdf-content">
                     <div class="ticket-box">
@@ -271,7 +336,7 @@
                                 <h4 id="disp-origen-code">ORG</h4>
                                 <span id="disp-origen">Origen</span>
                             </div>
-                            <i class="fa-solid fa-plane" style="color: var(--accent); font-size: 18px;"></i>
+                            <i class="fa-solid fa-plane" style="color: var(--gold); font-size: 20px;"></i>
                             <div class="route-city">
                                 <h4 id="disp-destino-code">DES</h4>
                                 <span id="disp-destino">Destino</span>
@@ -289,29 +354,40 @@
                     </div>
                 </div>
 
+                <!-- Selección de foto alegre/grupal con opción de Cámara o Galería -->
                 <div id="upload-section">
-                    <div class="form-group" style="margin-top: 20px;">
-                        <label for="photo"><i class="fa-solid fa-camera"></i> Fotografía del Pasajero:</label>
-                        <input type="file" id="photo" accept="image/*" capture="environment">
+                    <div class="photo-hint">
+                        <i class="fa-solid fa-camera-retro" style="font-size:20px;"></i>
+                        <span><b>¡Queremos tu foto!</b> Selecciona o tómate una foto agradable junto a tu grupo o compañero de asiento.</span>
                     </div>
+
+                    <div class="form-group">
+                        <label for="photo"><i class="fa-solid fa-image"></i> Adjunta tu fotografía:</label>
+                        <div class="file-input-wrapper">
+                            <!-- NOTA: Se removió capture="environment" para permitir elegir entre Galería y Cámara -->
+                            <input type="file" id="photo" accept="image/*">
+                        </div>
+                    </div>
+
                     <button type="button" onclick="enviarFoto()">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Confirmar & Subir Foto
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Compartir y Guardar Foto
                     </button>
                 </div>
 
+                <!-- Registro completado y Botón PDF -->
                 <div id="registered-section" class="hidden">
                     <div class="registered-badge">
-                        <i class="fa-solid fa-circle-check"></i> Fotografía y Check-in Registrados
+                        <i class="fa-solid fa-circle-check"></i> ¡Fotografía guardada con éxito! Disfruta del viaje.
                     </div>
                     <button type="button" class="btn-pdf" onclick="descargarPDF()">
                         <i class="fa-solid fa-file-pdf"></i> Descargar Pase de Abordar (PDF)
                     </button>
                 </div>
 
-                <div id="status-msg" style="margin-top: 10px; text-align: center; font-weight: 600; font-size:13px;"></div>
+                <div id="status-msg" style="margin-top: 10px; text-align: center; font-weight: 700; font-size:13px;"></div>
 
                 <button type="button" class="reset-btn" onclick="probarOtroUsuario()">
-                    <i class="fa-solid fa-rotate-left"></i> Consultar otra reserva
+                    <i class="fa-solid fa-rotate-left"></i> Probar con otro correo
                 </button>
             </div>
         </div>
@@ -393,13 +469,13 @@
             const statusMsg = document.getElementById('status-msg'); 
             
             if (!photoInput.files || photoInput.files.length === 0) { 
-                alert("Por favor selecciona o toma una foto."); 
+                alert("Por favor selecciona una foto de tu galería o tómate una foto."); 
                 return; 
             } 
             
             const file = photoInput.files[0]; 
-            statusMsg.style.color = "#2563eb"; 
-            statusMsg.innerText = "Subiendo imagen al servidor..."; 
+            statusMsg.style.color = "#0284c7"; 
+            statusMsg.innerText = "Guardando tu foto en la nube..."; 
 
             const formData = new FormData();
             formData.append("image", file);
@@ -414,7 +490,7 @@
             .then(data => {
                 if (data.success) {
                     statusMsg.style.color = "#10b981";
-                    statusMsg.innerText = "¡Fotografía registrada con éxito!";
+                    statusMsg.innerText = "¡Fotografía subida con éxito!";
                     
                     localStorage.setItem('foto_subida_' + usuarioActual.email, 'true');
 
@@ -440,7 +516,7 @@
             const element = document.getElementById('pdf-content');
             const opt = {
                 margin:       8,
-                filename:     `Boleto_${usuarioActual.nombre.replace(/ /g, "_")}.pdf`,
+                filename:     `Pase_Abordar_${usuarioActual.nombre.replace(/ /g, "_")}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2 },
                 jsPDF:        { unit: 'mm', format: 'a5', orientation: 'portrait' }
