@@ -160,25 +160,6 @@
             letter-spacing: 0.5px;
         }
 
-        .btn-sim-scan {
-            margin-top: 10px;
-            background: rgba(185, 154, 82, 0.2);
-            border: 1px dashed var(--gold-primary);
-            color: var(--gold-light);
-            font-size: 11px;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            text-align: center;
-            font-weight: 700;
-            transition: all 0.3s;
-        }
-
-        .btn-sim-scan:hover {
-            background: rgba(185, 154, 82, 0.35);
-            color: #ffffff;
-        }
-
         /* PANTALLA 2: FORMULARIO CORREO */
         .form-group { margin-bottom: 16px; }
 
@@ -554,10 +535,6 @@
                     <span class="qr-label-sub">Escanea aquí</span>
                 </div>
             </div>
-            
-            <div class="btn-sim-scan" onclick="activarModoScan()">
-                <i class="fa-solid fa-mobile-screen-button"></i> ¿Estás probando en tu computadora? Haz clic aquí para continuar
-            </div>
         </div>
 
         <!-- PANTALLA 2: FORMULARIO PARA COLOCAR EL MAIL -->
@@ -580,7 +557,7 @@
         <!-- PANTALLA 3: TARJETAS DE EMBARQUE Y FOTO -->
         <div id="step-details" class="hidden">
             
-            <!-- Mensaje guía detallado para usuarios con poca familiaridad tecnológica -->
+            <!-- Mensaje guía detallado -->
             <div class="guide-box">
                 <i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 14px;"></i> ¡Excelente! A continuación verás tus tarjetas de embarque oficiales, tanto de <strong>ida</strong> como de <strong>vuelta</strong>. Puedes guardarlas haciendo clic en el botón verde que encontrarás al final de la página.
             </div>
@@ -677,7 +654,7 @@
                         </div>
                     </div>
 
-                    <!-- VUELO DE REGRESO (Correctamente orientado hacia Buenos Aires) -->
+                    <!-- VUELO DE REGRESO (Orientado correctamente hacia la derecha / Buenos Aires) -->
                     <div class="boarding-pass-wrapper">
                         <span class="section-title-ticket"><i class="fa-solid fa-plane-arrival"></i> Vuelo de Regreso</span>
                         <div class="boarding-pass">
@@ -701,8 +678,8 @@
                                         <h3 id="disp-origen-vuelta">MENDOZA</h3>
                                         <span id="disp-origen-code-vuelta">MEN</span>
                                     </div>
-                                    <!-- Avión orientado correctamente apuntando a la izquierda hacia Buenos Aires -->
-                                    <i class="fa-solid fa-plane" style="color: var(--gold-primary); font-size: 16px; transform: scaleX(-1);"></i>
+                                    <!-- Avión orientado hacia la derecha -->
+                                    <i class="fa-solid fa-plane" style="color: var(--gold-primary); font-size: 16px;"></i>
                                     <div class="bp-city" style="text-align: right;">
                                         <span class="bp-label">Destino</span>
                                         <h3 id="disp-destino-vuelta">BUENOS AIRES</h3>
@@ -770,7 +747,7 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN DE FOTOS CON MENSAJE DETALLADO -->
+            <!-- SECCIÓN DE FOTOS -->
             <div id="upload-section">
                 <div class="photo-hint" style="background: rgba(185, 154, 82, 0.15); border: 1px solid var(--gold-primary);">
                     <i class="fa-solid fa-camera-retro" style="font-size:20px; color: var(--gold-primary);"></i>
