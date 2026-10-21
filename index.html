@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Librería html2canvas para descarga directa de imagen -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Librería QRCode.js para generar el QR automáticamente en pantalla -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
     <style>
         :root {
@@ -76,48 +78,86 @@
             font-weight: 700;
         }
 
-        /* SECCIÓN DE INSTRUCCIONES Y QR MEJORADA */
-        .info-qr-container {
+        /* SECCIÓN DE INSTRUCCIONES Y CÓDIGO QR INTEGRADO */
+        .qr-instructions-container {
             background: rgba(185, 154, 82, 0.08);
             border: 1px solid var(--border-gold);
-            padding: 16px;
+            padding: 18px;
             border-radius: 14px;
             margin-bottom: 20px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
         }
 
-        .info-qr-top {
+        .qr-instructions-top {
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
-        .info-qr-top i {
-            font-size: 26px;
-            color: var(--gold-primary);
+        .instructions-text {
+            flex: 1;
+            min-width: 240px;
         }
 
-        .info-qr-top h3 {
-            margin: 0;
-            font-size: 13px;
+        .instructions-text h3 {
+            margin: 0 0 8px 0;
+            font-size: 12px;
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .instructions-text h3 i {
+            color: var(--gold-primary);
+            font-size: 16px;
         }
 
         .instructions-list {
             margin: 0;
-            padding-left: 18px;
+            padding-left: 16px;
             font-size: 11px;
             color: var(--marfil);
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         .instructions-list li {
             margin-bottom: 4px;
+        }
+
+        /* Contenedor estético para el código QR generado */
+        .qr-code-box {
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            margin: 0 auto;
+        }
+
+        #qrcode canvas, #qrcode img {
+            display: block;
+            width: 100px !important;
+            height: 100px !important;
+        }
+
+        .qr-label-sub {
+            font-size: 8px;
+            color: #000000;
+            font-weight: 800;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .form-group { margin-bottom: 16px; }
@@ -464,18 +504,24 @@
             <p>20º Aniversario • Galardones a la Industria Turística</p>
         </div>
 
-        <!-- BLOQUE DE INSTRUCCIONES CLARAS PARA EL ACCESO POR QR -->
-        <div class="info-qr-container">
-            <div class="info-qr-top">
-                <i class="fa-solid fa-qrcode"></i>
-                <h3>Instrucciones de Acreditación</h3>
+        <!-- SECCIÓN DE INSTRUCCIONES Y CÓDIGO QR GENERADO -->
+        <div class="qr-instructions-container" id="qr-instructions-section">
+            <div class="qr-instructions-top">
+                <div class="instructions-text">
+                    <h3><i class="fa-solid fa-circle-info"></i> Instrucciones de Acreditación</h3>
+                    <ul class="instructions-list">
+                        <li><strong>1. Escanea el código QR</strong> con tu teléfono para acceder al portal.</li>
+                        <li><strong>2. Ingresa tu correo electrónico registrado</strong> en el formulario para consultar tus tarjetas de embarque.</li>
+                        <li><strong>3. Descarga tus pases</strong> de ida y vuelta en imagen PNG.</li>
+                        <li><strong>4. Sube tu fotografía</strong> para compartirla y reproducirla durante la ceremonia del evento.</li>
+                    </ul>
+                </div>
+                <!-- Contenedor del código QR generado de forma nativa -->
+                <div class="qr-code-box">
+                    <div id="qrcode"></div>
+                    <span class="qr-label-sub">Escanea aquí</span>
+                </div>
             </div>
-            <ul class="instructions-list">
-                <li><strong>1. Escanea el código QR</strong> con la cámara de tu celular para ingresar a esta plataforma.</li>
-                <li><strong>2. Ingresa tu correo electrónico registrado</strong> en el formulario de abajo para consultar tus datos.</li>
-                <li><strong>3. Descarga tus tarjetas de embarque</strong> (Ida y Vuelta) listas para el evento.</li>
-                <li><strong>4. Sube una o varias fotografías</strong> con tu grupo de viaje o acompañantes para que sean reproducidas y compartidas durante la ceremonia.</li>
-            </ul>
         </div>
 
         <!-- SECCIÓN DE BÚSQUEDA MEDIANTE INGRESO DE CORREO -->
@@ -488,7 +534,7 @@
                 <i class="fa-solid fa-magnifying-glass"></i> Consultar Reserva
             </button>
             <div id="error-msg" style="color:#f87171; font-size:12px; text-align:center; margin-top:10px; font-weight:600;" class="hidden">
-                <i class="fa-solid fa-circle-exclamation"></i> Correo no encontrado en la base de datos oficial.
+                <i class="fa-solid fa-circle-exclamation"></i> El correo ingresado no se encuentra en la lista de invitados registrados.
             </div>
         </div>
 
@@ -590,7 +636,7 @@
                         </div>
                     </div>
 
-                    <!-- TARJETA 2: VUELO DE REGRESO (Avión orientado correctamente hacia el origen) -->
+                    <!-- TARJETA 2: VUELO DE REGRESO (Avión orientado hacia el origen correctamente) -->
                     <div class="boarding-pass-wrapper">
                         <span class="section-title-ticket"><i class="fa-solid fa-plane-arrival"></i> Vuelo de Regreso</span>
                         <div class="boarding-pass">
@@ -687,7 +733,7 @@
             <div id="upload-section">
                 <div class="photo-hint">
                     <i class="fa-solid fa-camera" style="font-size:18px; color: var(--gold-primary);"></i>
-                    <span>¡Sube una linda fotografía con tu grupo de viaje o acompañantes para que sea reproducida durante el evento!</span>
+                    <span>¡Sube una o varias fotografías con tu grupo de viaje o acompañantes para que sean reproducidas y compartidas durante la ceremonia!</span>
                 </div>
 
                 <div class="form-group">
@@ -734,6 +780,24 @@
 
         let usuarioActual = null; 
 
+        // Generar el código QR automáticamente al cargar la página apuntando a la URL actual
+        window.addEventListener('DOMContentLoaded', () => {
+            const currentUrl = window.location.href;
+            const qrcodeContainer = document.getElementById("qrcode");
+            
+            if (qrcodeContainer) {
+                qrcodeContainer.innerHTML = ""; // Limpiar por seguridad
+                new QRCode(qrcodeContainer, {
+                    text: currentUrl,
+                    width: 100,
+                    height: 100,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+            }
+        });
+
         function buscarUsuarioManual() {
             const emailInput = document.getElementById('email').value.trim();
             if (emailInput) {
@@ -752,6 +816,7 @@
             if (usuarioActual) { 
                 errorMsg.classList.add('hidden'); 
                 document.getElementById('step-search').classList.add('hidden');
+                document.getElementById('qr-instructions-section').classList.add('hidden'); // Ocultar instrucciones/QR una vez adentro
                 
                 // Rellenar datos IDA
                 document.getElementById('disp-nombre-ida').innerText = usuarioActual.nombre; 
@@ -870,6 +935,7 @@
         function probarOtroUsuario() {
             document.getElementById('step-details').classList.add('hidden');
             document.getElementById('step-search').classList.remove('hidden');
+            document.getElementById('qr-instructions-section').classList.remove('hidden'); // Volver a mostrar las instrucciones con el QR
             document.getElementById('email').value = "";
             document.getElementById('status-msg').innerText = "";
             document.getElementById('photo').value = "";
