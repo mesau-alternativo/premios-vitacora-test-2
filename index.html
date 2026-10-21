@@ -77,7 +77,7 @@
             font-weight: 700;
         }
 
-        /* PANTALLA 1: SOLO INSTRUCCIONES Y QR GENERAL */
+        /* PANTALLA 1: MENSAJE CORDIAL + QR */
         .qr-instructions-container {
             background: rgba(185, 154, 82, 0.08);
             border: 1px solid var(--border-gold);
@@ -89,11 +89,11 @@
         }
 
         .welcome-greeting {
-            font-size: 13px;
-            color: var(--gold-light);
-            font-weight: 700;
-            margin: 0 0 4px 0;
-            line-height: 1.4;
+            font-size: 12px;
+            color: var(--marfil);
+            font-weight: 600;
+            margin: 0 0 6px 0;
+            line-height: 1.5;
         }
 
         .qr-instructions-top {
@@ -112,7 +112,7 @@
         .instructions-text h3 {
             margin: 0 0 8px 0;
             font-size: 12px;
-            color: #ffffff;
+            color: var(--gold-light);
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 800;
@@ -121,21 +121,16 @@
             gap: 8px;
         }
 
-        .instructions-text h3 i {
-            color: var(--gold-primary);
-            font-size: 16px;
-        }
-
         .instructions-list {
             margin: 0;
             padding-left: 16px;
             font-size: 11px;
             color: var(--marfil);
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .instructions-list li {
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .qr-code-box {
@@ -254,13 +249,28 @@
             margin-top: 15px;
         }
 
+        /* MENSAJE GUÍA ANTES DEL BOARDING PASS */
+        .guide-box {
+            background: rgba(185, 154, 82, 0.1);
+            border: 1px solid var(--border-gold);
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 11px;
+            color: var(--marfil);
+            line-height: 1.5;
+            text-align: center;
+            font-weight: 600;
+        }
+
         /* VISTA Y TARJETAS DE EMBARQUE */
         .preview-scroll-container {
-            max-height: 500px;
+            max-height: 480px;
             overflow-y: auto;
             border-radius: 14px;
             border: 1px solid var(--border-gold);
             padding: 5px;
+            margin-bottom: 12px;
         }
 
         #ticket-content-container {
@@ -527,36 +537,33 @@
             <p>20º Aniversario • Galardones a la Industria Turística</p>
         </div>
 
-        <!-- PANTALLA 1: INSTRUCCIONES GENERALES + CÓDIGO QR -->
+        <!-- PANTALLA 1: MENSAJE CORDIAL + INSTRUCCIONES + QR -->
         <div class="qr-instructions-container" id="screen-welcome">
-            <p class="welcome-greeting"><i class="fa-solid fa-champagne-glasses"></i> ¡Hola! Qué alegría saludarte. Te damos una cálida bienvenida a esta gran celebración del 20º Aniversario.</p>
+            <p class="welcome-greeting"><i class="fa-solid fa-champagne-glasses" style="color: var(--gold-primary);"></i> ¡Buenas tardes! Si recibiste este correo es porque fuiste especialmente invitado a la gran celebración del <strong>20º Aniversario de los Premios Bitácora 2026</strong>. Sigue las sencillas instrucciones a continuación:</p>
             <div class="qr-instructions-top">
                 <div class="instructions-text">
-                    <h3><i class="fa-solid fa-circle-info"></i> ¿Cómo obtener tu pase?</h3>
+                    <h3><i class="fa-solid fa-circle-info"></i> Paso a paso:</h3>
                     <ul class="instructions-list">
-                        <li><strong>1. Escanea el código QR</strong> con tu teléfono celular.</li>
-                        <li><strong>2. Ingresa tu correo electrónico registrado</strong> en la casilla que se abrirá en tu móvil.</li>
-                        <li><strong>3. Descarga tus pases</strong> de ida y vuelta oficiales.</li>
-                        <li><strong>4. Sube tu fotografía</strong> para compartirla durante la ceremonia.</li>
+                        <li><strong>1.</strong> Saca tu celular y <strong>escanea el código QR</strong> de la derecha.</li>
+                        <li><strong>2.</strong> En la pantalla que se abrirá en tu teléfono, ingresa tu correo electrónico registrado.</li>
+                        <li><strong>3.</strong> ¡Listo! Podrás ver y descargar tus tarjetas de embarque de ida y vuelta.</li>
                     </ul>
                 </div>
-                <!-- Código QR que incluye la redirección con ?scan=true -->
                 <div class="qr-code-box">
                     <div id="qrcode"></div>
-                    <span class="qr-label-sub">Escanea para ingresar</span>
+                    <span class="qr-label-sub">Escanea aquí</span>
                 </div>
             </div>
             
-            <!-- Botón de prueba/simulación por si está probando en PC directamente -->
             <div class="btn-sim-scan" onclick="activarModoScan()">
-                <i class="fa-solid fa-mobile-screen-button"></i> ¿Estás en tu celular? Haz clic aquí para ingresar tu correo
+                <i class="fa-solid fa-mobile-screen-button"></i> ¿Estás probando en tu computadora? Haz clic aquí para continuar
             </div>
         </div>
 
-        <!-- PANTALLA 2: FORMULARIO CORREO (Oculto por defecto hasta escanear o hacer clic) -->
+        <!-- PANTALLA 2: FORMULARIO PARA COLOCAR EL MAIL -->
         <div id="step-search" class="hidden">
-            <p style="font-size:12px; color:var(--gold-light); margin-top:0; margin-bottom:14px; text-align:center; font-weight:600;">
-                <i class="fa-solid fa-user-check"></i> Ingresa tu correo para consultar tu tarjeta de embarque:
+            <p style="font-size:12px; color:var(--marfil); margin-top:0; margin-bottom:14px; text-align:center; line-height:1.4; font-weight:600;">
+                <i class="fa-solid fa-envelope-circle-check" style="color:var(--gold-primary);"></i> Por favor, escribe a continuación el correo electrónico con el que te registraste en el evento para buscar tu información:
             </p>
             <div class="form-group">
                 <label for="email"><i class="fa-regular fa-envelope"></i> Correo Electrónico Registrado:</label>
@@ -566,13 +573,18 @@
                 <i class="fa-solid fa-magnifying-glass"></i> Consultar Reserva
             </button>
             <div id="error-msg" style="color:#f87171; font-size:12px; text-align:center; margin-top:10px; font-weight:600;" class="hidden">
-                <i class="fa-solid fa-circle-exclamation"></i> El correo ingresado no se encuentra en la lista de invitados registrados. Por favor, verifica tus datos.
+                <i class="fa-solid fa-circle-exclamation"></i> El correo ingresado no se encuentra en la lista de invitados. Por favor, verifica que esté bien escrito.
             </div>
         </div>
 
         <!-- PANTALLA 3: TARJETAS DE EMBARQUE Y FOTO -->
         <div id="step-details" class="hidden">
             
+            <!-- Mensaje guía detallado para usuarios con poca familiaridad tecnológica -->
+            <div class="guide-box">
+                <i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 14px;"></i> ¡Excelente! A continuación verás tus tarjetas de embarque oficiales, tanto de <strong>ida</strong> como de <strong>vuelta</strong>. Puedes guardarlas haciendo clic en el botón verde que encontrarás al final de la página.
+            </div>
+
             <div class="preview-scroll-container">
                 <div id="ticket-content-container">
                     
@@ -665,7 +677,7 @@
                         </div>
                     </div>
 
-                    <!-- VUELO DE REGRESO -->
+                    <!-- VUELO DE REGRESO (Correctamente orientado hacia Buenos Aires) -->
                     <div class="boarding-pass-wrapper">
                         <span class="section-title-ticket"><i class="fa-solid fa-plane-arrival"></i> Vuelo de Regreso</span>
                         <div class="boarding-pass">
@@ -689,8 +701,8 @@
                                         <h3 id="disp-origen-vuelta">MENDOZA</h3>
                                         <span id="disp-origen-code-vuelta">MEN</span>
                                     </div>
-                                    <!-- Avión orientado apuntando a la derecha hacia el destino final -->
-                                    <i class="fa-solid fa-plane" style="color: var(--gold-primary); font-size: 16px;"></i>
+                                    <!-- Avión orientado correctamente apuntando a la izquierda hacia Buenos Aires -->
+                                    <i class="fa-solid fa-plane" style="color: var(--gold-primary); font-size: 16px; transform: scaleX(-1);"></i>
                                     <div class="bp-city" style="text-align: right;">
                                         <span class="bp-label">Destino</span>
                                         <h3 id="disp-destino-vuelta">BUENOS AIRES</h3>
@@ -758,10 +770,11 @@
                 </div>
             </div>
 
+            <!-- SECCIÓN DE FOTOS CON MENSAJE DETALLADO -->
             <div id="upload-section">
-                <div class="photo-hint">
-                    <i class="fa-solid fa-camera" style="font-size:18px; color: var(--gold-primary);"></i>
-                    <span>¡Sube una o varias fotografías con tu grupo de viaje para que sean reproducidas durante la ceremonia!</span>
+                <div class="photo-hint" style="background: rgba(185, 154, 82, 0.15); border: 1px solid var(--gold-primary);">
+                    <i class="fa-solid fa-camera-retro" style="font-size:20px; color: var(--gold-primary);"></i>
+                    <span style="line-height: 1.5;"><strong>¡Dinámica especial del evento!</strong> Una vez que descargues tu boarding pass, te invitamos a cargar una o más fotografías con tus compañeros de viaje o acompañantes. Estas fotos serán reproducidas durante la ceremonia para pasar un momento mucho más ameno y divertido entre todos.</span>
                 </div>
 
                 <div class="form-group">
@@ -776,10 +789,10 @@
 
             <div id="registered-section" class="hidden">
                 <div class="registered-badge">
-                    <i class="fa-solid fa-circle-check"></i> Fotografía guardada correctamente para la dinámica del evento.
+                    <i class="fa-solid fa-circle-check"></i> ¡Muchas gracias! Tu fotografía ha sido guardada con éxito para la ceremonia.
                 </div>
                 <button type="button" class="btn-img" onclick="descargarImagenPNG()">
-                    <i class="fa-solid fa-file-image"></i> Descargar Tarjetas (Ida y Vuelta PNG)
+                    <i class="fa-solid fa-file-image"></i> Descargar Mis Tarjetas (Ida y Vuelta PNG)
                 </button>
             </div>
 
@@ -808,9 +821,7 @@
         let usuarioActual = null; 
 
         window.addEventListener('DOMContentLoaded', () => {
-            // URL base limpia (sin parámetros)
             const baseUrl = window.location.href.split('?')[0];
-            // La URL que genera el QR le agrega ?scan=true
             const qrTargetUrl = baseUrl + "?scan=true";
 
             const qrcodeContainer = document.getElementById("qrcode");
@@ -826,14 +837,12 @@
                 });
             }
 
-            // Comprobar si proviene de haber escaneado el QR (URL contiene ?scan=true)
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('scan') === 'true') {
                 activarModoScan();
             }
         });
 
-        // Oculta pantalla 1 de QR e instrucciones generales y muestra Pantalla 2 (Formulario correo)
         function activarModoScan() {
             document.getElementById('screen-welcome').classList.add('hidden');
             document.getElementById('step-search').classList.remove('hidden');
