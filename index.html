@@ -76,6 +76,30 @@
             font-weight: 700;
         }
 
+        /* SECCIÓN DE INSTRUCCIONES Y QR */
+        .info-qr-box {
+            background: rgba(185, 154, 82, 0.08);
+            border: 1px solid var(--border-gold);
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .info-qr-box i {
+            font-size: 28px;
+            color: var(--gold-primary);
+        }
+
+        .info-qr-box p {
+            margin: 0;
+            font-size: 11px;
+            color: var(--marfil);
+            line-height: 1.4;
+        }
+
         .form-group { margin-bottom: 16px; }
 
         label {
@@ -420,17 +444,25 @@
             <p>20º Aniversario • Galardones a la Industria Turística</p>
         </div>
 
+        <!-- INSTRUCCIONES Y ACCESO POR QR -->
+        <div class="info-qr-box">
+            <i class="fa-solid fa-qrcode"></i>
+            <div>
+                <p><strong>¡Escanea el QR o ingresa tu correo!</strong> Simulación oficial de acreditación. Escribe el correo electrónico con el que estás registrado en la base de datos para consultar tus tarjetas de embarque de ida y vuelta.</p>
+            </div>
+        </div>
+
         <!-- SECCIÓN DE BÚSQUEDA MEDIANTE INGRESO DE CORREO -->
         <div id="step-search">
             <div class="form-group">
                 <label for="email"><i class="fa-regular fa-envelope"></i> Correo Electrónico Registrado:</label>
-                <input type="email" id="email" placeholder="tucorreo@ejemplo.com" required>
+                <input type="email" id="email" placeholder="ejemplo@correo.com" required>
             </div>
             <button type="button" onclick="buscarUsuarioManual()">
                 <i class="fa-solid fa-magnifying-glass"></i> Consultar Reserva
             </button>
             <div id="error-msg" style="color:#f87171; font-size:12px; text-align:center; margin-top:10px; font-weight:600;" class="hidden">
-                <i class="fa-solid fa-circle-exclamation"></i> Correo no encontrado en la lista de invitados.
+                <i class="fa-solid fa-circle-exclamation"></i> Correo no encontrado en la base de datos oficial.
             </div>
         </div>
 
@@ -532,7 +564,7 @@
                         </div>
                     </div>
 
-                    <!-- TARJETA 2: VUELO DE REGRESO -->
+                    <!-- TARJETA 2: VUELO DE REGRESO (Avión orientado hacia el origen correctamente) -->
                     <div class="boarding-pass-wrapper">
                         <span class="section-title-ticket"><i class="fa-solid fa-plane-arrival"></i> Vuelo de Regreso</span>
                         <div class="boarding-pass">
@@ -556,7 +588,8 @@
                                         <h3 id="disp-origen-vuelta">MENDOZA</h3>
                                         <span id="disp-origen-code-vuelta">MEN</span>
                                     </div>
-                                    <i class="fa-solid fa-plane" style="color: var(--gold-primary); font-size: 16px; transform: rotate(180deg);"></i>
+                                    <!-- Avión con rotación corregida apuntando hacia el destino correcto -->
+                                    <i class="fa-solid fa-plane" style="color: var(--gold-primary); font-size: 16px; transform: scaleX(-1);"></i>
                                     <div class="bp-city" style="text-align: right;">
                                         <span class="bp-label">Destino</span>
                                         <h3 id="disp-destino-vuelta">BUENOS AIRES</h3>
@@ -659,26 +692,18 @@
     </div>
 
     <script>
-        // Simulación de base de datos (Aquí luego conectarás tu Excel o base real)
+        // Base de datos completa con los 10 invitados oficiales
         const listaAsistentes = [
-            { 
-                email: "mauricioesaualternativo@gmail.com", 
-                nombre: "MAURICIO ESAU ECHENAGUCIA", 
-                asiento: "07A", puerta: "B12", embarque: "18:40", origen: "Buenos Aires", destino: "Mendoza", 
-                vueloV: "PB 2027", asientoV: "12F", puertaV: "C04", embarqueV: "14:20", origenV: "Mendoza", destinoV: "Buenos Aires" 
-            },
-            { 
-                email: "sofia.martinez@ejemplo.com", 
-                nombre: "SOFÍA MARTÍNEZ", 
-                asiento: "01A", puerta: "B01", embarque: "08:15", origen: "Córdoba", destino: "Mendoza", 
-                vueloV: "PB 2027", asientoV: "03B", puertaV: "A02", embarqueV: "16:00", origenV: "Mendoza", destinoV: "Córdoba" 
-            },
-            { 
-                email: "carlos.gomez@ejemplo.com", 
-                nombre: "CARLOS GÓMEZ", 
-                asiento: "12F", puerta: "C03", embarque: "10:30", origen: "Buenos Aires", destino: "Bariloche", 
-                vueloV: "PB 2027", asientoV: "10A", puertaV: "B05", embarqueV: "11:00", origenV: "Bariloche", destinoV: "Buenos Aires" 
-            }
+            { email: "mauricioesaualternativo@gmail.com", nombre: "MAURICIO ESAU ECHENAGUCIA", asiento: "07A", puerta: "B12", embarque: "18:40", origen: "Buenos Aires", destino: "Mendoza", vueloV: "PB 2027", asientoV: "12F", puertaV: "C04", embarqueV: "14:20", origenV: "Mendoza", destinoV: "Buenos Aires" },
+            { email: "sofia.martinez@ejemplo.com", nombre: "SOFÍA MARTÍNEZ", asiento: "01A", puerta: "B01", embarque: "08:15", origen: "Córdoba", destino: "Mendoza", vueloV: "PB 2027", asientoV: "03B", puertaV: "A02", embarqueV: "16:00", origenV: "Mendoza", destinoV: "Córdoba" },
+            { email: "carlos.gomez@ejemplo.com", nombre: "CARLOS GÓMEZ", asiento: "12F", puerta: "C03", embarque: "10:30", origen: "Buenos Aires", destino: "Bariloche", vueloV: "PB 2027", asientoV: "10A", puertaV: "B05", embarqueV: "11:00", origenV: "Bariloche", destinoV: "Buenos Aires" },
+            { email: "lucia.ferreyra@ejemplo.com", nombre: "LUCÍA FERREYRA", asiento: "05C", puerta: "A04", embarque: "11:15", origen: "Rosario", destino: "Mendoza", vueloV: "PB 2027", asientoV: "08C", puertaV: "B02", embarqueV: "15:30", origenV: "Mendoza", destinoV: "Rosario" },
+            { email: "diego.alvarez@ejemplo.com", nombre: "DIEGO ÁLVAREZ", asiento: "14B", puerta: "B08", embarque: "12:00", origen: "Buenos Aires", destino: "Mendoza", vueloV: "PB 2027", asientoV: "15E", puertaV: "C01", embarqueV: "13:45", origenV: "Mendoza", destinoV: "Buenos Aires" },
+            { email: "valentina.diaz@ejemplo.com", nombre: "VALENTINA DÍAZ", asiento: "03E", puerta: "A01", embarque: "09:30", origen: "Mar del Plata", destino: "Mendoza", vueloV: "PB 2027", asientoV: "04A", puertaV: "A03", embarqueV: "17:10", origenV: "Mendoza", destinoV: "Mar del Plata" },
+            { email: "mateo.romero@ejemplo.com", nombre: "MATEO ROMERO", asiento: "18D", puerta: "C02", embarque: "14:00", origen: "Buenos Aires", destino: "Mendoza", vueloV: "PB 2027", asientoV: "11B", puertaV: "B04", embarqueV: "12:30", origenV: "Mendoza", destinoV: "Buenos Aires" },
+            { email: "camila.torres@ejemplo.com", nombre: "CAMILA TORRES", asiento: "06F", puerta: "B03", embarque: "13:20", origen: "Salta", destino: "Mendoza", vueloV: "PB 2027", asientoV: "09D", puertaV: "C02", embarqueV: "15:00", origenV: "Mendoza", destinoV: "Salta" },
+            { email: "joaquin.sosa@ejemplo.com", nombre: "JOAQUÍN SOSA", asiento: "09A", puerta: "A05", embarque: "15:10", origen: "Buenos Aires", destino: "Mendoza", vueloV: "PB 2027", asientoV: "14C", puertaV: "B06", embarqueV: "16:45", origenV: "Mendoza", destinoV: "Buenos Aires" },
+            { email: "elena.benitez@ejemplo.com", nombre: "ELENA BENÍTEZ", asiento: "02B", puerta: "B09", embarque: "07:45", origen: "Tucumán", destino: "Mendoza", vueloV: "PB 2027", asientoV: "05F", puertaV: "A01", embarqueV: "18:00", origenV: "Mendoza", destinoV: "Tucumán" }
         ]; 
 
         let usuarioActual = null; 
@@ -716,7 +741,7 @@
                 document.getElementById('stub-asiento-ida').innerText = usuarioActual.asiento;
                 document.getElementById('stub-puerta-ida').innerText = usuarioActual.puerta;
 
-                // Rellenar datos VUELTA
+                // Rellenar datos VUELTA (Invertido: Origen Mendoza -> Destino Ciudad de Origen)
                 document.getElementById('disp-nombre-vuelta').innerText = usuarioActual.nombre; 
                 document.getElementById('disp-origen-vuelta').innerText = usuarioActual.origenV.toUpperCase(); 
                 document.getElementById('disp-origen-code-vuelta').innerText = usuarioActual.origenV.substring(0,3).toUpperCase();
