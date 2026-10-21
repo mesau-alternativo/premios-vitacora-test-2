@@ -76,28 +76,48 @@
             font-weight: 700;
         }
 
-        /* SECCIÓN DE INSTRUCCIONES Y QR */
-        .info-qr-box {
+        /* SECCIÓN DE INSTRUCCIONES Y QR MEJORADA */
+        .info-qr-container {
             background: rgba(185, 154, 82, 0.08);
             border: 1px solid var(--border-gold);
-            padding: 14px;
-            border-radius: 12px;
-            margin-bottom: 18px;
+            padding: 16px;
+            border-radius: 14px;
+            margin-bottom: 20px;
             display: flex;
-            align-items: center;
-            gap: 15px;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .info-qr-box i {
-            font-size: 28px;
+        .info-qr-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .info-qr-top i {
+            font-size: 26px;
             color: var(--gold-primary);
         }
 
-        .info-qr-box p {
+        .info-qr-top h3 {
             margin: 0;
+            font-size: 13px;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 800;
+        }
+
+        .instructions-list {
+            margin: 0;
+            padding-left: 18px;
             font-size: 11px;
             color: var(--marfil);
-            line-height: 1.4;
+            line-height: 1.5;
+        }
+
+        .instructions-list li {
+            margin-bottom: 4px;
         }
 
         .form-group { margin-bottom: 16px; }
@@ -444,12 +464,18 @@
             <p>20º Aniversario • Galardones a la Industria Turística</p>
         </div>
 
-        <!-- INSTRUCCIONES Y ACCESO POR QR -->
-        <div class="info-qr-box">
-            <i class="fa-solid fa-qrcode"></i>
-            <div>
-                <p><strong>¡Escanea el QR o ingresa tu correo!</strong> Simulación oficial de acreditación. Escribe el correo electrónico con el que estás registrado en la base de datos para consultar tus tarjetas de embarque de ida y vuelta.</p>
+        <!-- BLOQUE DE INSTRUCCIONES CLARAS PARA EL ACCESO POR QR -->
+        <div class="info-qr-container">
+            <div class="info-qr-top">
+                <i class="fa-solid fa-qrcode"></i>
+                <h3>Instrucciones de Acreditación</h3>
             </div>
+            <ul class="instructions-list">
+                <li><strong>1. Escanea el código QR</strong> con la cámara de tu celular para ingresar a esta plataforma.</li>
+                <li><strong>2. Ingresa tu correo electrónico registrado</strong> en el formulario de abajo para consultar tus datos.</li>
+                <li><strong>3. Descarga tus tarjetas de embarque</strong> (Ida y Vuelta) listas para el evento.</li>
+                <li><strong>4. Sube una o varias fotografías</strong> con tu grupo de viaje o acompañantes para que sean reproducidas y compartidas durante la ceremonia.</li>
+            </ul>
         </div>
 
         <!-- SECCIÓN DE BÚSQUEDA MEDIANTE INGRESO DE CORREO -->
@@ -564,7 +590,7 @@
                         </div>
                     </div>
 
-                    <!-- TARJETA 2: VUELO DE REGRESO (Avión orientado hacia el origen correctamente) -->
+                    <!-- TARJETA 2: VUELO DE REGRESO (Avión orientado correctamente hacia el origen) -->
                     <div class="boarding-pass-wrapper">
                         <span class="section-title-ticket"><i class="fa-solid fa-plane-arrival"></i> Vuelo de Regreso</span>
                         <div class="boarding-pass">
@@ -588,7 +614,7 @@
                                         <h3 id="disp-origen-vuelta">MENDOZA</h3>
                                         <span id="disp-origen-code-vuelta">MEN</span>
                                     </div>
-                                    <!-- Avión con rotación corregida apuntando hacia el destino correcto -->
+                                    <!-- Avión orientado correctamente -->
                                     <i class="fa-solid fa-plane" style="color: var(--gold-primary); font-size: 16px; transform: scaleX(-1);"></i>
                                     <div class="bp-city" style="text-align: right;">
                                         <span class="bp-label">Destino</span>
@@ -661,7 +687,7 @@
             <div id="upload-section">
                 <div class="photo-hint">
                     <i class="fa-solid fa-camera" style="font-size:18px; color: var(--gold-primary);"></i>
-                    <span>¡Sube una linda fotografía con tu grupo de viaje o acompañantes para compartir durante la ceremonia!</span>
+                    <span>¡Sube una linda fotografía con tu grupo de viaje o acompañantes para que sea reproducida durante el evento!</span>
                 </div>
 
                 <div class="form-group">
@@ -676,7 +702,7 @@
 
             <div id="registered-section" class="hidden">
                 <div class="registered-badge">
-                    <i class="fa-solid fa-circle-check"></i> Fotografía guardada correctamente.
+                    <i class="fa-solid fa-circle-check"></i> Fotografía guardada correctamente para la dinámica del evento.
                 </div>
                 <button type="button" class="btn-img" onclick="descargarImagenPNG()">
                     <i class="fa-solid fa-file-image"></i> Descargar Tarjetas (Ida y Vuelta PNG)
@@ -692,7 +718,7 @@
     </div>
 
     <script>
-        // Base de datos completa con los 10 invitados oficiales
+        // Listado completo de los 10 invitados oficiales con su base de datos simulada
         const listaAsistentes = [
             { email: "mauricioesaualternativo@gmail.com", nombre: "MAURICIO ESAU ECHENAGUCIA", asiento: "07A", puerta: "B12", embarque: "18:40", origen: "Buenos Aires", destino: "Mendoza", vueloV: "PB 2027", asientoV: "12F", puertaV: "C04", embarqueV: "14:20", origenV: "Mendoza", destinoV: "Buenos Aires" },
             { email: "sofia.martinez@ejemplo.com", nombre: "SOFÍA MARTÍNEZ", asiento: "01A", puerta: "B01", embarque: "08:15", origen: "Córdoba", destino: "Mendoza", vueloV: "PB 2027", asientoV: "03B", puertaV: "A02", embarqueV: "16:00", origenV: "Mendoza", destinoV: "Córdoba" },
@@ -741,7 +767,7 @@
                 document.getElementById('stub-asiento-ida').innerText = usuarioActual.asiento;
                 document.getElementById('stub-puerta-ida').innerText = usuarioActual.puerta;
 
-                // Rellenar datos VUELTA (Invertido: Origen Mendoza -> Destino Ciudad de Origen)
+                // Rellenar datos VUELTA
                 document.getElementById('disp-nombre-vuelta').innerText = usuarioActual.nombre; 
                 document.getElementById('disp-origen-vuelta').innerText = usuarioActual.origenV.toUpperCase(); 
                 document.getElementById('disp-origen-code-vuelta').innerText = usuarioActual.origenV.substring(0,3).toUpperCase();
